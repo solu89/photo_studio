@@ -1,0 +1,2039 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>SOLU PHOTO STUDIO PRO — Offline Passport, Print & Studio Suite</title>
+
+  <style>
+    /* ==========================================================================
+       100% OFFLINE CSS VARIABLES & RESET (ZERO EXTERNAL DEPENDENCIES)
+       ========================================================================== */
+    :root {
+      --bg-app: #090d16;
+      --bg-panel: #111827;
+      --bg-card: #1a2336;
+      --bg-input: #0c1220;
+      --border: #28354f;
+      --text-main: #f8fafc;
+      --text-sub: #94a3b8;
+      --text-dim: #64748b;
+      --accent: #3b82f6;
+      --accent-2: #8b5cf6;
+      --success: #10b981;
+      --danger: #ef4444;
+      --warning: #f59e0b;
+    }
+
+    [data-theme="light"] {
+      --bg-app: #e2e8f0;
+      --bg-panel: #ffffff;
+      --bg-card: #f8fafc;
+      --bg-input: #ffffff;
+      --border: #cbd5e1;
+      --text-main: #0f172a;
+      --text-sub: #475569;
+      --text-dim: #64748b;
+      --accent: #2563eb;
+      --accent-2: #7c3aed;
+    }
+
+    * {
+      box-sizing: border-box;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: 100vw;
+      overflow-x: hidden;
+      font-family: system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+      background: var(--bg-app);
+      color: var(--text-main);
+      font-size: 14px;
+    }
+
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 99px; }
+    .no-scrollbar::-webkit-scrollbar { display: none; }
+    .no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+    /* ==========================================================================
+       HEADER & TOP BAR
+       ========================================================================== */
+    .app-header {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-logo {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 18px;
+      color: #fff;
+      font-weight: 800;
+      flex-shrink: 0;
+      box-shadow: 0 4px 14px rgba(59, 130, 246, 0.35);
+    }
+
+    .brand-title {
+      font-size: 15px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      margin: 0;
+      background: linear-gradient(90deg, #60a5fa, #a78bfa);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .brand-sub {
+      font-size: 11px;
+      color: var(--text-sub);
+      margin: 1px 0 0 0;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      flex-wrap: wrap;
+    }
+
+    /* ==========================================================================
+       BUTTONS, INPUTS & CONTROLS
+       ========================================================================== */
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--bg-card);
+      color: var(--text-main);
+      padding: 8px 12px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: 0.15s ease;
+      user-select: none;
+    }
+
+    .btn:hover { border-color: var(--accent); }
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), var(--accent-2));
+      border-color: transparent;
+      color: #ffffff;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
+    }
+
+    .btn-success {
+      background: linear-gradient(135deg, #059669, #10b981);
+      border-color: transparent;
+      color: #ffffff;
+    }
+
+    .btn-danger {
+      border-color: rgba(239, 68, 68, 0.4);
+      color: #f87171;
+    }
+
+    .btn-sm { padding: 6px 10px; font-size: 11px; border-radius: 8px; }
+    .btn-block { width: 100%; }
+
+    .input, .select {
+      width: 100%;
+      background: var(--bg-input);
+      border: 1px solid var(--border);
+      color: var(--text-main);
+      padding: 8px 10px;
+      border-radius: 9px;
+      font-size: 12.5px;
+      font-weight: 600;
+      outline: none;
+    }
+
+    .input:focus, .select:focus { border-color: var(--accent); }
+
+    label.field-label {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 11.5px;
+      font-weight: 700;
+      color: var(--text-sub);
+      margin-bottom: 5px;
+    }
+
+    input[type="range"] {
+      width: 100%;
+      accent-color: var(--accent);
+      cursor: pointer;
+      height: 5px;
+    }
+
+    .card {
+      background: var(--bg-card);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 12px;
+      margin-bottom: 12px;
+    }
+
+    .card-title {
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: #60a5fa;
+      margin: 0 0 10px 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+    .grid-3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 6px; }
+    .grid-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 6px; }
+
+    /* ==========================================================================
+       MAIN WORKSPACE LAYOUT (RESPONSIVE MOBILE + DESKTOP)
+       ========================================================================== */
+    .workspace {
+      display: flex;
+      flex-direction: column;
+      min-height: calc(100vh - 59px);
+      padding-bottom: 64px;
+    }
+
+    @media (min-width: 1024px) {
+      .workspace {
+        flex-direction: row;
+        height: calc(100vh - 59px);
+        overflow: hidden;
+        padding-bottom: 0;
+      }
+    }
+
+    /* Tool Navigation Strip */
+    .tool-rail {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      overflow-x: auto;
+      padding: 8px;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+
+    @media (min-width: 1024px) {
+      .tool-rail {
+        flex-direction: column;
+        width: 92px;
+        border-bottom: none;
+        border-right: 1px solid var(--border);
+        padding: 10px 6px;
+        overflow-y: auto;
+      }
+    }
+
+    .tool-tab {
+      background: transparent;
+      border: 1px solid transparent;
+      color: var(--text-sub);
+      border-radius: 10px;
+      padding: 8px 10px;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 4px;
+      min-width: 74px;
+      font-size: 10.5px;
+      font-weight: 700;
+      transition: 0.15s;
+      flex-shrink: 0;
+      text-align: center;
+    }
+
+    .tool-tab .ico { font-size: 17px; }
+    .tool-tab:hover { background: var(--bg-card); color: var(--text-main); }
+    .tool-tab.active {
+      background: rgba(59, 130, 246, 0.16);
+      border-color: var(--accent);
+      color: #60a5fa;
+    }
+
+    /* Center Live Canvas Stage */
+    .stage-area {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      background: radial-gradient(circle at center, #141c2e 0%, var(--bg-app) 100%);
+      position: relative;
+      overflow: hidden;
+      min-height: 360px;
+    }
+
+    [data-theme="light"] .stage-area {
+      background: radial-gradient(circle at center, #cbd5e1 0%, #94a3b8 100%);
+    }
+
+    .stage-toolbar {
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
+      padding: 7px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      flex-wrap: wrap;
+      font-size: 11.5px;
+    }
+
+    .canvas-viewport {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+      overflow: auto;
+      position: relative;
+    }
+
+    .checkerboard {
+      background-color: #ffffff;
+      background-image:
+        linear-gradient(45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(-45deg, #e2e8f0 25%, transparent 25%),
+        linear-gradient(45deg, transparent 75%, #e2e8f0 75%),
+        linear-gradient(-45deg, transparent 75%, #e2e8f0 75%);
+      background-size: 16px 16px;
+      background-position: 0 0, 0 8px, 8px -8px, -8px 0px;
+    }
+
+    #main-canvas {
+      max-width: 100%;
+      max-height: 62vh;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.55);
+      border-radius: 4px;
+      display: block;
+      touch-action: none;
+    }
+
+    @media (min-width: 1024px) {
+      #main-canvas { max-height: calc(100vh - 155px); }
+    }
+
+    /* Empty Upload Dropzone */
+    .dropzone-box {
+      border: 2px dashed var(--accent);
+      background: rgba(17, 24, 39, 0.85);
+      border-radius: 18px;
+      padding: 32px 24px;
+      text-align: center;
+      max-width: 420px;
+      width: 100%;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .dropzone-box:hover {
+      background: rgba(30, 41, 59, 0.95);
+      transform: translateY(-2px);
+    }
+
+    /* Right Control Inspector Panel */
+    .inspector-pane {
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+      padding: 14px;
+      overflow-y: auto;
+    }
+
+    @media (min-width: 1024px) {
+      .inspector-pane {
+        width: 375px;
+        border-top: none;
+        border-left: 1px solid var(--border);
+        height: 100%;
+      }
+    }
+
+    .tool-panel { display: none; }
+    .tool-panel.active { display: block; }
+
+    /* Color Swatch Buttons */
+    .swatch-row {
+      display: flex;
+      gap: 7px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .swatch {
+      width: 28px;
+      height: 28px;
+      border-radius: 8px;
+      border: 2px solid var(--border);
+      cursor: pointer;
+      transition: 0.15s;
+    }
+
+    .swatch.active, .swatch:hover {
+      border-color: #ffffff;
+      transform: scale(1.1);
+      box-shadow: 0 0 0 2px var(--accent);
+    }
+
+    /* Mobile Bottom Action Bar */
+    .mobile-bar {
+      position: fixed;
+      bottom: 0;
+      inset-x: 0;
+      background: var(--bg-panel);
+      border-top: 1px solid var(--border);
+      padding: 8px 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      z-index: 45;
+    }
+
+    @media (min-width: 1024px) {
+      .mobile-bar { display: none; }
+    }
+
+    /* Toast */
+    #toast-box {
+      position: fixed;
+      bottom: 72px;
+      right: 14px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      pointer-events: none;
+    }
+    @media (min-width: 1024px) { #toast-box { bottom: 18px; } }
+    .toast {
+      background: var(--bg-panel);
+      color: var(--text-main);
+      border: 1px solid var(--border);
+      border-left: 4px solid var(--accent);
+      padding: 9px 14px;
+      border-radius: 10px;
+      font-size: 12px;
+      font-weight: 700;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.45);
+    }
+
+    /* ==========================================================================
+       DIRECT PRINT ENGINE (@media print)
+       ========================================================================== */
+    @page { margin: 0; }
+    @media print {
+      body * { visibility: hidden !important; }
+      #print-output-img, #print-output-img * { visibility: visible !important; }
+      #print-output-img {
+        position: fixed !important;
+        left: 0 !important;
+        top: 0 !important;
+        width: 100vw !important;
+        height: auto !important;
+        margin: 0 !important;
+        padding: 0 !important;
+        display: block !important;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Hidden Print Image Target -->
+  <img id="print-output-img" alt="Print Sheet" style="display:none;" />
+
+  <!-- ========================================================================
+       TOP STUDIO HEADER
+       ======================================================================== -->
+  <header class="app-header">
+    <div class="brand">
+      <div class="brand-logo">📷</div>
+      <div>
+        <h1 class="brand-title">SOLU PHOTO STUDIO PRO</h1>
+        <p class="brand-sub">100% Offline • Passport Print • BG Remover • KB Compressor • Collage</p>
+      </div>
+    </div>
+
+    <div class="header-actions">
+      <label class="btn btn-primary" title="Attach Photo from Gallery or Camera">
+        <span>📁 Attach Photo</span>
+        <input type="file" id="global-photo-input" accept="image/*" style="display:none;" />
+      </label>
+
+      <button type="button" class="btn" id="btn-undo" title="Undo Last Edit">↩️ Undo</button>
+      <button type="button" class="btn" id="btn-reset-photo" title="Reset to Original Attached Photo">🔄 Original</button>
+      <button type="button" class="btn" id="btn-theme" title="Switch Dark / Light Theme">🌓</button>
+      <button type="button" class="btn" id="btn-download-app" title="Save This Offline Studio App as HTML File">💾 Save App HTML</button>
+      <button type="button" class="btn btn-success" id="btn-print-now" title="Print Sheet or Photo Directly">🖨️ Print</button>
+      <button type="button" class="btn btn-primary" id="btn-export-final" title="Download Final Edited Image">⬇️ Download</button>
+    </div>
+  </header>
+
+  <!-- ========================================================================
+       MAIN WORKSPACE
+       ======================================================================== -->
+  <div class="workspace">
+
+    <!-- LEFT / TOP TOOL RAIL -->
+    <nav class="tool-rail no-scrollbar" id="tool-rail">
+      <button type="button" class="tool-tab active" data-tool="passport">
+        <span class="ico">🪪</span>
+        <span>Passport Print</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="bg">
+        <span class="ico">🎨</span>
+        <span>BG Changer</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="retouch">
+        <span class="ico">✨</span>
+        <span>Color & Glow</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="crop">
+        <span class="ico">✂️</span>
+        <span>Crop & Rotate</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="compress">
+        <span class="ico">🗜️</span>
+        <span>KB Resize</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="collage">
+        <span class="ico">🖼️</span>
+        <span>Album Collage</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="watermark">
+        <span class="ico">🏷️</span>
+        <span>Studio Stamp</span>
+      </button>
+      <button type="button" class="tool-tab" data-tool="info">
+        <span class="ico">📊</span>
+        <span>Photo Info</span>
+      </button>
+    </nav>
+
+    <!-- CENTER LIVE CANVAS STAGE -->
+    <main class="stage-area">
+      <div class="stage-toolbar">
+        <div style="display:flex;align-items:center;gap:8px;flex-wrap:wrap;">
+          <span id="badge-dimensions" style="font-weight:800;color:#60a5fa;">No Photo Attached</span>
+          <span id="badge-filesize" style="color:var(--text-sub);">—</span>
+        </div>
+        <div style="display:flex;align-items:center;gap:6px;">
+          <button type="button" class="btn btn-sm" id="btn-compare-hold" title="Press & Hold to View Original Photo">👁️ Hold Original</button>
+          <select id="export-format" class="select" style="width:auto;padding:5px 8px;font-size:11px;">
+            <option value="image/jpeg">JPG (Print/Web)</option>
+            <option value="image/png">PNG (Transparent)</option>
+            <option value="image/webp">WEBP (Ultra Light)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="canvas-viewport" id="canvas-viewport">
+        <!-- Initial Dropzone -->
+        <div class="dropzone-box" id="empty-dropzone">
+          <div style="font-size:42px;margin-bottom:10px;">📸</div>
+          <h2 style="margin:0 0 6px 0;font-size:17px;font-weight:800;">Attach Client Photo to Start</h2>
+          <p style="margin:0 0 16px 0;font-size:12px;color:var(--text-sub);line-height:1.5;">
+            Passport Print Sheets • Background Color Change • Govt Form KB Compressor • Studio Retouch • Wedding Collage • Watermark
+          </p>
+          <label class="btn btn-primary" style="padding:10px 18px;font-size:13px;">
+            <span>📁 Select Photo from Device</span>
+            <input type="file" id="dropzone-file-input" accept="image/*" style="display:none;" />
+          </label>
+          <div style="margin-top:10px;">
+            <button type="button" class="btn btn-sm" id="btn-load-demo-portrait">✨ Load Sample Studio Portrait</button>
+          </div>
+        </div>
+
+        <!-- Active Interactive Canvas -->
+        <canvas id="main-canvas" class="checkerboard" style="display:none;"></canvas>
+      </div>
+    </main>
+
+    <!-- RIGHT / BOTTOM INSPECTOR CONTROLS -->
+    <aside class="inspector-pane" id="inspector-pane">
+
+      <!-- ====================================================================
+           TOOL 1: PASSPORT & MULTI-PHOTO PRINT SHEET MAKER
+           ==================================================================== -->
+      <div class="tool-panel active" id="panel-passport">
+        <div class="card">
+          <div class="card-title">
+            <span>🪪 1. Photo & Paper Size</span>
+            <span style="font-size:10px;color:#10b981;">300 DPI Print Ready</span>
+          </div>
+
+          <div style="margin-bottom:9px;">
+            <label class="field-label">Photo Size Preset</label>
+            <select id="pp-photo-size" class="select">
+              <option value="35x45">Indian Passport / Visa (35 × 45 mm)</option>
+              <option value="25x35">PAN Card / Stamp Size (25 × 35 mm)</option>
+              <option value="20x25">Mini Stamp Photo (20 × 25 mm)</option>
+              <option value="51x51">US / OCI / Square Visa (51 × 51 mm / 2×2")</option>
+              <option value="35x35">Square ID Photo (35 × 35 mm)</option>
+              <option value="89x127">3.5 × 5 Inch (3R Postcard)</option>
+              <option value="102x152">4 × 6 Inch (4R Single Photo)</option>
+            </select>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:9px;">
+            <div>
+              <label class="field-label">Print Paper Sheet</label>
+              <select id="pp-paper-size" class="select">
+                <option value="4x6">4 × 6 Inch (Lab Paper)</option>
+                <option value="5x7">5 × 7 Inch Sheet</option>
+                <option value="A4">A4 Sheet (210 × 297 mm)</option>
+                <option value="A5">A5 Sheet (148 × 210 mm)</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Orientation</label>
+              <select id="pp-orientation" class="select">
+                <option value="landscape">Landscape (Wide)</option>
+                <option value="portrait">Portrait (Tall)</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:9px;">
+            <div>
+              <label class="field-label">Number of Copies</label>
+              <select id="pp-copies" class="select">
+                <option value="auto">Auto-Fill Max Copies</option>
+                <option value="4">4 Copies</option>
+                <option value="6">6 Copies</option>
+                <option value="8" selected>8 Copies (4×6 Standard)</option>
+                <option value="12">12 Copies</option>
+                <option value="16">16 Copies</option>
+                <option value="20">20 Copies</option>
+                <option value="24">24 Copies</option>
+                <option value="30">30 Copies</option>
+                <option value="36">36 Copies (A4 Full)</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Photo Border</label>
+              <select id="pp-border" class="select">
+                <option value="thin-black">Thin Black Line (1px)</option>
+                <option value="thick-black">Bold Frame (2px)</option>
+                <option value="white-frame">White Studio Margin</option>
+                <option value="none">No Border</option>
+              </select>
+            </div>
+          </div>
+
+          <div style="margin-bottom:9px;">
+            <label class="field-label">
+              <span>Spacing / Gap Between Photos</span>
+              <span id="lbl-pp-gap">3 mm</span>
+            </label>
+            <input type="range" id="pp-gap" min="0" max="10" step="0.5" value="3" />
+          </div>
+
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:10px;font-size:12px;">
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;">
+              <input type="checkbox" id="pp-cutmarks" checked /> Show Scissor Cut-Marks
+            </label>
+            <label style="display:flex;align-items:center;gap:6px;cursor:pointer;font-weight:700;">
+              <input type="checkbox" id="pp-name-date" /> Print Name/Date
+            </label>
+          </div>
+
+          <div id="pp-name-date-box" style="display:none;margin-bottom:10px;">
+            <input type="text" id="pp-caption-text" class="input" placeholder="e.g. RAHUL SHARMA • 17/11/2026" />
+          </div>
+
+          <div class="grid-2">
+            <button type="button" class="btn btn-primary" id="btn-generate-sheet">⚡ Build Print Sheet</button>
+            <button type="button" class="btn btn-success" id="btn-print-sheet">🖨️ Print Sheet</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 2: BACKGROUND CHANGER & MAGIC ERASER
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-bg">
+        <div class="card">
+          <div class="card-title"><span>🎨 Studio Background Changer</span></div>
+          <p style="font-size:11.5px;color:var(--text-sub);margin:0 0 10px 0;">
+            1-Click solid studio backdrop replacement + manual brush cleanup for hair & edges.
+          </p>
+
+          <label class="field-label">1. Choose Studio Backdrop Color</label>
+          <div class="swatch-row" style="margin-bottom:12px;" id="bg-swatches">
+            <button type="button" class="swatch active" style="background:#ffffff;" data-bg="#ffffff" title="Pure White (Passport)"></button>
+            <button type="button" class="swatch" style="background:#38bdf8;" data-bg="#38bdf8" title="Sky Blue (Indian ID)"></button>
+            <button type="button" class="swatch" style="background:#1d4ed8;" data-bg="#1d4ed8" title="Royal Studio Blue"></button>
+            <button type="button" class="swatch" style="background:#dc2626;" data-bg="#dc2626" title="Crimson Red"></button>
+            <button type="button" class="swatch" style="background:#e2e8f0;" data-bg="#e2e8f0" title="Soft Studio Grey"></button>
+            <button type="button" class="swatch" style="background:#0f172a;" data-bg="#0f172a" title="Charcoal Black"></button>
+            <button type="button" class="swatch checkerboard" data-bg="transparent" title="Transparent PNG"></button>
+            <input type="color" id="bg-custom-color" value="#38bdf8" style="width:28px;height:28px;border:0;background:none;cursor:pointer;" title="Custom Color" />
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label class="field-label">
+              <span>2. Auto-Remove Tolerance (Corner Color Match)</span>
+              <span id="lbl-bg-tol">38</span>
+            </label>
+            <input type="range" id="bg-tolerance" min="5" max="120" value="38" />
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label class="field-label">
+              <span>Edge Feather / Smoothness</span>
+              <span id="lbl-bg-feather">2 px</span>
+            </label>
+            <input type="range" id="bg-feather" min="0" max="8" value="2" />
+          </div>
+
+          <button type="button" class="btn btn-primary btn-block" id="btn-auto-bg" style="margin-bottom:12px;">
+            🪄 Auto Replace Background
+          </button>
+
+          <div style="border-top:1px solid var(--border);padding-top:10px;">
+            <label class="field-label">3. Precision Touch / Mouse Brush</label>
+            <div class="grid-3" style="margin-bottom:8px;">
+              <button type="button" class="btn btn-sm brush-mode active" data-bmode="none">✋ Pan/View</button>
+              <button type="button" class="btn btn-sm brush-mode" data-bmode="erase">🧹 Erase BG</button>
+              <button type="button" class="btn btn-sm brush-mode" data-bmode="restore">🖌️ Restore</button>
+            </div>
+            <label class="field-label">
+              <span>Brush Size</span>
+              <span id="lbl-brush-size">24 px</span>
+            </label>
+            <input type="range" id="bg-brush-size" min="5" max="80" value="24" />
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 3: STUDIO COLOR LAB & SKIN RETOUCH
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-retouch">
+        <div class="card">
+          <div class="card-title">
+            <span>✨ Studio Color & Portrait Lab</span>
+            <button type="button" class="btn btn-sm" id="btn-reset-filters">Reset</button>
+          </div>
+
+          <div class="grid-3" style="margin-bottom:12px;">
+            <button type="button" class="btn btn-sm preset-filter" data-preset="auto">⚡ Auto Fix</button>
+            <button type="button" class="btn btn-sm preset-filter" data-preset="portrait">🌟 Studio Glow</button>
+            <button type="button" class="btn btn-sm preset-filter" data-preset="bw">🖤 Classic B&W</button>
+            <button type="button" class="btn btn-sm preset-filter" data-preset="vivid">🌈 Vivid Print</button>
+            <button type="button" class="btn btn-sm preset-filter" data-preset="warm">☀️ Warm Gold</button>
+            <button type="button" class="btn btn-sm preset-filter" data-preset="cool">❄️ Crisp Cool</button>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <label class="field-label"><span>Brightness</span><span id="val-bright">100%</span></label>
+            <input type="range" id="flt-bright" min="50" max="160" value="100" />
+          </div>
+          <div style="margin-bottom:8px;">
+            <label class="field-label"><span>Contrast</span><span id="val-contrast">100%</span></label>
+            <input type="range" id="flt-contrast" min="50" max="160" value="100" />
+          </div>
+          <div style="margin-bottom:8px;">
+            <label class="field-label"><span>Saturation (Color Depth)</span><span id="val-sat">100%</span></label>
+            <input type="range" id="flt-sat" min="0" max="180" value="100" />
+          </div>
+          <div style="margin-bottom:8px;">
+            <label class="field-label"><span>Warmth / Temperature</span><span id="val-warm">0</span></label>
+            <input type="range" id="flt-warm" min="-40" max="40" value="0" />
+          </div>
+          <div style="margin-bottom:8px;">
+            <label class="field-label"><span>Skin Smooth / Soft Focus</span><span id="val-smooth">0%</span></label>
+            <input type="range" id="flt-smooth" min="0" max="100" value="0" />
+          </div>
+          <div style="margin-bottom:12px;">
+            <label class="field-label"><span>Studio Vignette</span><span id="val-vig">0%</span></label>
+            <input type="range" id="flt-vig" min="0" max="100" value="0" />
+          </div>
+
+          <button type="button" class="btn btn-primary btn-block" id="btn-bake-filters">✅ Apply Color Adjustments</button>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 4: CROP, ROTATE & ASPECT RATIO
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-crop">
+        <div class="card">
+          <div class="card-title"><span>✂️ Crop, Rotate & Flip</span></div>
+
+          <div class="grid-4" style="margin-bottom:12px;">
+            <button type="button" class="btn btn-sm" id="btn-rot-left">↺ -90°</button>
+            <button type="button" class="btn btn-sm" id="btn-rot-right">↻ +90°</button>
+            <button type="button" class="btn btn-sm" id="btn-flip-h">⇄ Flip H</button>
+            <button type="button" class="btn btn-sm" id="btn-flip-v">⇅ Flip V</button>
+          </div>
+
+          <label class="field-label">Aspect Ratio Crop Preset (Center Fit)</label>
+          <div class="grid-2" style="margin-bottom:12px;">
+            <button type="button" class="btn btn-sm crop-ratio" data-ratio="35/45">🪪 Passport (35:45)</button>
+            <button type="button" class="btn btn-sm crop-ratio" data-ratio="25/35">💳 PAN Card (25:35)</button>
+            <button type="button" class="btn btn-sm crop-ratio" data-ratio="1/1">🟦 Square (1:1)</button>
+            <button type="button" class="btn btn-sm crop-ratio" data-ratio="4/5">📱 Insta Portrait (4:5)</button>
+            <button type="button" class="btn btn-sm crop-ratio" data-ratio="4/6">🖼️ 4×6 Lab Print (2:3)</button>
+            <button type="button" class="btn btn-sm crop-ratio" data-ratio="16/9">🎬 Wide HD (16:9)</button>
+          </div>
+
+          <label class="field-label">Custom Interactive Crop Box</label>
+          <div class="grid-2">
+            <button type="button" class="btn" id="btn-toggle-cropbox">📐 Drag Crop Box</button>
+            <button type="button" class="btn btn-primary" id="btn-apply-cropbox">✂️ Crop Now</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 5: GOVT FORM KB COMPRESSOR & PIXEL RESIZER
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-compress">
+        <div class="card">
+          <div class="card-title"><span>🗜️ Govt Form KB Compressor</span></div>
+          <p style="font-size:11.5px;color:var(--text-sub);margin:0 0 10px 0;">
+            SSC, UPSC, PAN, Passport, Aadhar & Online Portal exact KB & pixel resizer.
+          </p>
+
+          <label class="field-label">1-Click Govt Portal Presets</label>
+          <div class="grid-2" style="margin-bottom:10px;">
+            <button type="button" class="btn btn-sm govt-preset" data-w="200" data-h="230" data-kb="45">SSC / Railway (20-50 KB)</button>
+            <button type="button" class="btn btn-sm govt-preset" data-w="213" data-h="213" data-kb="28">PAN Photo (213×213, &lt;30KB)</button>
+            <button type="button" class="btn btn-sm govt-preset" data-w="400" data-h="200" data-kb="18">Signature (&lt;20 KB)</button>
+            <button type="button" class="btn btn-sm govt-preset" data-w="350" data-h="450" data-kb="95">UPSC / State Exam (&lt;100KB)</button>
+          </div>
+
+          <div class="grid-2" style="margin-bottom:9px;">
+            <div>
+              <label class="field-label">Width (px)</label>
+              <input type="number" id="res-width" class="input" placeholder="Width" />
+            </div>
+            <div>
+              <label class="field-label">Height (px)</label>
+              <input type="number" id="res-height" class="input" placeholder="Height" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label class="field-label">Target Maximum File Size (KB)</label>
+            <input type="number" id="res-target-kb" class="input" value="50" min="5" max="5000" />
+          </div>
+
+          <button type="button" class="btn btn-primary btn-block" id="btn-run-compress">
+            ⚡ Compress & Download Exact KB JPG
+          </button>
+          <div id="compress-status" style="margin-top:8px;font-size:11.5px;font-weight:700;color:#10b981;text-align:center;"></div>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 6: ALBUM & MULTI-PHOTO COLLAGE MAKER
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-collage">
+        <div class="card">
+          <div class="card-title"><span>🖼️ Wedding & Event Collage Maker</span></div>
+          <p style="font-size:11.5px;color:var(--text-sub);margin:0 0 10px 0;">
+            Select 2 to 6 photos to create an instant studio grid collage.
+          </p>
+
+          <label class="btn btn-primary btn-block" style="margin-bottom:10px;">
+            <span>➕ Select Multiple Photos (2–6)</span>
+            <input type="file" id="collage-files-input" accept="image/*" multiple style="display:none;" />
+          </label>
+
+          <div class="grid-2" style="margin-bottom:9px;">
+            <div>
+              <label class="field-label">Grid Columns</label>
+              <select id="col-cols" class="select">
+                <option value="2">2 Columns</option>
+                <option value="3">3 Columns</option>
+                <option value="1">Vertical Strip</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Frame Color</label>
+              <input type="color" id="col-bg" value="#ffffff" class="input" style="height:35px;padding:2px;" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:9px;">
+            <label class="field-label"><span>Photo Gap</span><span id="lbl-col-gap">12 px</span></label>
+            <input type="range" id="col-gap" min="0" max="40" value="12" />
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label class="field-label"><span>Rounded Corners</span><span id="lbl-col-rad">8 px</span></label>
+            <input type="range" id="col-rad" min="0" max="40" value="8" />
+          </div>
+
+          <button type="button" class="btn btn-success btn-block" id="btn-build-collage">🖼️ Render Collage on Canvas</button>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 7: STUDIO WATERMARK & COPYRIGHT STAMP
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-watermark">
+        <div class="card">
+          <div class="card-title"><span>🏷️ Studio Watermark & Date Stamp</span></div>
+
+          <div style="margin-bottom:8px;">
+            <label class="field-label">Studio Name / Client Proof Text</label>
+            <input type="text" id="wm-text" class="input" value="SOLU DIGITAL STUDIO • PROOF" />
+          </div>
+
+          <div class="grid-2" style="margin-bottom:8px;">
+            <div>
+              <label class="field-label">Position</label>
+              <select id="wm-pos" class="select">
+                <option value="bottom-right">Bottom Right</option>
+                <option value="bottom-left">Bottom Left</option>
+                <option value="center">Center Proof</option>
+                <option value="tile">Diagonal Full Tile</option>
+              </select>
+            </div>
+            <div>
+              <label class="field-label">Text Color</label>
+              <input type="color" id="wm-color" value="#ffffff" class="input" style="height:35px;padding:2px;" />
+            </div>
+          </div>
+
+          <div style="margin-bottom:8px;">
+            <label class="field-label"><span>Font Size</span><span id="lbl-wm-size">28 px</span></label>
+            <input type="range" id="wm-size" min="12" max="90" value="28" />
+          </div>
+
+          <div style="margin-bottom:10px;">
+            <label class="field-label"><span>Opacity</span><span id="lbl-wm-op">75%</span></label>
+            <input type="range" id="wm-op" min="15" max="100" value="75" />
+          </div>
+
+          <button type="button" class="btn btn-primary btn-block" id="btn-apply-wm">🏷️ Stamp Watermark on Photo</button>
+        </div>
+      </div>
+
+      <!-- ====================================================================
+           TOOL 8: PHOTO INSPECTOR & HISTOGRAM
+           ==================================================================== -->
+      <div class="tool-panel" id="panel-info">
+        <div class="card">
+          <div class="card-title"><span>📊 Image Specs & RGB Histogram</span></div>
+          <div id="info-table" style="font-size:12px;line-height:1.8;color:var(--text-sub);margin-bottom:12px;">
+            Attach a photo to inspect dimensions, megapixels, aspect ratio, and color histogram.
+          </div>
+          <canvas id="histogram-canvas" width="320" height="110" style="width:100%;background:#090d16;border:1px solid var(--border);border-radius:8px;"></canvas>
+        </div>
+      </div>
+
+    </aside>
+  </div>
+
+  <!-- MOBILE STICKY BOTTOM ACTION BAR -->
+  <div class="mobile-bar">
+    <label class="btn btn-primary" style="padding:9px 6px;">
+      <span>📁 Attach</span>
+      <input type="file" id="mobile-photo-input" accept="image/*" style="display:none;" />
+    </label>
+    <button type="button" class="btn btn-success" id="mob-print" style="padding:9px 6px;">🖨️ Print</button>
+    <button type="button" class="btn" id="mob-download" style="padding:9px 6px;">⬇️ Save</button>
+  </div>
+
+  <div id="toast-box"></div>
+
+  <!-- ========================================================================
+       100% OFFLINE STUDIO JAVASCRIPT ENGINE
+       ======================================================================== -->
+  <script>
+    (function () {
+      'use strict';
+
+      const canvas = document.getElementById('main-canvas');
+      const ctx = canvas.getContext('2d', { willReadFrequently: true });
+      const dropzone = document.getElementById('empty-dropzone');
+
+      let originalImage = null;   // HTMLImageElement of untouched attached photo
+      let workingCanvas = document.createElement('canvas'); // Current base raster state
+      let workingCtx = workingCanvas.getContext('2d', { willReadFrequently: true });
+      let undoStack = [];
+
+      // Brush & Crop Interactive State
+      let brushMode = 'none'; // 'none' | 'erase' | 'restore'
+      let isDrawing = false;
+      let cropBoxActive = false;
+      let cropRect = { x: 0.1, y: 0.1, w: 0.8, h: 0.8 };
+      let draggingCrop = false;
+      let cropStart = { x: 0, y: 0 };
+      let collageImages = [];
+
+      function toast(msg) {
+        const box = document.getElementById('toast-box');
+        const el = document.createElement('div');
+        el.className = 'toast';
+        el.textContent = msg;
+        box.appendChild(el);
+        setTimeout(() => el.remove(), 2600);
+      }
+
+      /* ----------------------------------------------------------------------
+         THEME TOGGLE & TOOL NAVIGATION
+         ---------------------------------------------------------------------- */
+      document.getElementById('btn-theme').addEventListener('click', () => {
+        const html = document.documentElement;
+        html.setAttribute('data-theme', html.getAttribute('data-theme') === 'dark' ? 'light' : 'dark');
+      });
+
+      document.querySelectorAll('.tool-tab').forEach((tab) => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.tool-tab').forEach((t) => t.classList.remove('active'));
+          tab.classList.add('active');
+          document.querySelectorAll('.tool-panel').forEach((p) => p.classList.remove('active'));
+          document.getElementById('panel-' + tab.dataset.tool).classList.add('active');
+          if (tab.dataset.tool === 'info') updateInfoAndHistogram();
+        });
+      });
+
+      /* ----------------------------------------------------------------------
+         PHOTO LOADING & UNDO HISTORY
+         ---------------------------------------------------------------------- */
+      function pushUndo() {
+        if (!workingCanvas.width) return;
+        if (undoStack.length >= 12) undoStack.shift();
+        undoStack.push(workingCanvas.toDataURL('image/png'));
+      }
+
+      function loadImageFromSrc(src, fileSizeBytes = 0) {
+        const img = new Image();
+        img.onload = () => {
+          originalImage = img;
+          undoStack = [];
+          workingCanvas.width = img.naturalWidth || img.width;
+          workingCanvas.height = img.naturalHeight || img.height;
+          workingCtx.clearRect(0, 0, workingCanvas.width, workingCanvas.height);
+          workingCtx.drawImage(img, 0, 0);
+
+          dropzone.style.display = 'none';
+          canvas.style.display = 'block';
+
+          document.getElementById('res-width').value = workingCanvas.width;
+          document.getElementById('res-height').value = workingCanvas.height;
+
+          syncMainCanvasFromWorking();
+          updateStatusBadges(fileSizeBytes);
+          updateInfoAndHistogram();
+          toast('📸 Photo loaded into Studio!');
+        };
+        img.src = src;
+      }
+
+      function handleFileUpload(file) {
+        if (!file) return;
+        const reader = new FileReader();
+        reader.onload = (e) => loadImageFromSrc(e.target.result, file.size);
+        reader.readAsDataURL(file);
+      }
+
+      ['global-photo-input', 'dropzone-file-input', 'mobile-photo-input'].forEach((id) => {
+        document.getElementById(id).addEventListener('change', (e) => {
+          if (e.target.files && e.target.files[0]) handleFileUpload(e.target.files[0]);
+        });
+      });
+
+      // Drag and drop on stage
+      const viewport = document.getElementById('canvas-viewport');
+      viewport.addEventListener('dragover', (e) => e.preventDefault());
+      viewport.addEventListener('drop', (e) => {
+        e.preventDefault();
+        if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+          handleFileUpload(e.dataTransfer.files[0]);
+        }
+      });
+
+      // Sample Studio Portrait Generator (100% Offline Canvas Vector Portrait)
+      document.getElementById('btn-load-demo-portrait').addEventListener('click', () => {
+        const c = document.createElement('canvas');
+        c.width = 600;
+        c.height = 750;
+        const g = c.getContext('2d');
+        g.fillStyle = '#dbeafe';
+        g.fillRect(0, 0, 600, 750);
+        // Shoulders / Suit
+        g.fillStyle = '#1e293b';
+        g.beginPath();
+        g.ellipse(300, 760, 230, 210, 0, Math.PI, 0);
+        g.fill();
+        // Shirt & Tie
+        g.fillStyle = '#ffffff';
+        g.beginPath();
+        g.moveTo(245, 550); g.lineTo(355, 550); g.lineTo(300, 690); g.closePath(); g.fill();
+        g.fillStyle = '#2563eb';
+        g.beginPath();
+        g.moveTo(288, 560); g.lineTo(312, 560); g.lineTo(318, 670); g.lineTo(300, 695); g.lineTo(282, 670); g.closePath(); g.fill();
+        // Neck & Face
+        g.fillStyle = '#eab696';
+        g.fillRect(262, 460, 76, 100);
+        g.fillStyle = '#f1c2a3';
+        g.beginPath();
+        g.ellipse(300, 345, 112, 142, 0, 0, Math.PI * 2);
+        g.fill();
+        // Hair
+        g.fillStyle = '#0f172a';
+        g.beginPath();
+        g.ellipse(300, 255, 118, 85, 0, Math.PI, 0);
+        g.fill();
+        // Eyes & Smile
+        g.fillStyle = '#0f172a';
+        g.beginPath(); g.arc(258, 335, 10, 0, Math.PI * 2); g.arc(342, 335, 10, 0, Math.PI * 2); g.fill();
+        g.strokeStyle = '#9a3412';
+        g.lineWidth = 5;
+        g.beginPath(); g.arc(300, 395, 36, 0.2, Math.PI - 0.2); g.stroke();
+
+        loadImageFromSrc(c.toDataURL('image/png'), 42000);
+      });
+
+      function syncMainCanvasFromWorking() {
+        if (!workingCanvas.width) return;
+        canvas.width = workingCanvas.width;
+        canvas.height = workingCanvas.height;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        ctx.drawImage(workingCanvas, 0, 0);
+
+        if (cropBoxActive) {
+          drawCropOverlay();
+        }
+        updateStatusBadges();
+      }
+
+      function updateStatusBadges(knownBytes = 0) {
+        if (!workingCanvas.width) return;
+        document.getElementById('badge-dimensions').textContent = `${workingCanvas.width} × ${workingCanvas.height} px`;
+        if (knownBytes > 0) {
+          document.getElementById('badge-filesize').textContent = `• ${(knownBytes / 1024).toFixed(1)} KB`;
+        } else {
+          const estKb = Math.round((workingCanvas.width * workingCanvas.height * 0.45) / 1024);
+          document.getElementById('badge-filesize').textContent = `• ~${estKb} KB`;
+        }
+      }
+
+      document.getElementById('btn-undo').addEventListener('click', () => {
+        if (!undoStack.length) return toast('⚠️ Nothing to undo.');
+        const prev = undoStack.pop();
+        const img = new Image();
+        img.onload = () => {
+          workingCanvas.width = img.width;
+          workingCanvas.height = img.height;
+          workingCtx.clearRect(0, 0, workingCanvas.width, workingCanvas.height);
+          workingCtx.drawImage(img, 0, 0);
+          syncMainCanvasFromWorking();
+          toast('↩️ Undid last action');
+        };
+        img.src = prev;
+      });
+
+      document.getElementById('btn-reset-photo').addEventListener('click', () => {
+        if (!originalImage) return;
+        pushUndo();
+        cropBoxActive = false;
+        workingCanvas.width = originalImage.naturalWidth || originalImage.width;
+        workingCanvas.height = originalImage.naturalHeight || originalImage.height;
+        workingCtx.clearRect(0, 0, workingCanvas.width, workingCanvas.height);
+        workingCtx.drawImage(originalImage, 0, 0);
+        syncMainCanvasFromWorking();
+        toast('🔄 Restored original attached photo');
+      });
+
+      // Press & Hold to Compare with Original
+      const btnCompare = document.getElementById('btn-compare-hold');
+      const showOrigPreview = () => {
+        if (!originalImage) return;
+        canvas.width = originalImage.width;
+        canvas.height = originalImage.height;
+        ctx.drawImage(originalImage, 0, 0);
+      };
+      const hideOrigPreview = () => syncMainCanvasFromWorking();
+      btnCompare.addEventListener('mousedown', showOrigPreview);
+      btnCompare.addEventListener('mouseup', hideOrigPreview);
+      btnCompare.addEventListener('mouseleave', hideOrigPreview);
+      btnCompare.addEventListener('touchstart', (e) => { e.preventDefault(); showOrigPreview(); }, { passive: false });
+      btnCompare.addEventListener('touchend', hideOrigPreview);
+
+      /* ----------------------------------------------------------------------
+         TOOL 1: PASSPORT & MULTI-PHOTO PRINT SHEET GENERATOR (300 DPI)
+         ---------------------------------------------------------------------- */
+      const ppGapSlider = document.getElementById('pp-gap');
+      ppGapSlider.addEventListener('input', () => {
+        document.getElementById('lbl-pp-gap').textContent = ppGapSlider.value + ' mm';
+      });
+      document.getElementById('pp-name-date').addEventListener('change', (e) => {
+        document.getElementById('pp-name-date-box').style.display = e.target.checked ? 'block' : 'none';
+      });
+
+      function buildPrintSheet() {
+        if (!workingCanvas.width) return toast('⚠️ Please attach a photo first!');
+        pushUndo();
+
+        const DPI = 300;
+        const MM_TO_PX = DPI / 25.4;
+
+        // Parse photo dimensions in mm
+        const [pwMm, phMm] = document.getElementById('pp-photo-size').value.split('x').map(Number);
+        const photoW = Math.round(pwMm * MM_TO_PX);
+        const photoH = Math.round(phMm * MM_TO_PX);
+
+        // Parse paper dimensions in mm
+        const paperVal = document.getElementById('pp-paper-size').value;
+        let sheetWm = 101.6, sheetHm = 152.4; // 4x6 inch
+        if (paperVal === '5x7') { sheetWm = 127; sheetHm = 177.8; }
+        else if (paperVal === 'A4') { sheetWm = 210; sheetHm = 297; }
+        else if (paperVal === 'A5') { sheetWm = 148; sheetHm = 210; }
+
+        const orient = document.getElementById('pp-orientation').value;
+        if (orient === 'landscape' && sheetWm < sheetHm) {
+          [sheetWm, sheetHm] = [sheetHm, sheetWm];
+        } else if (orient === 'portrait' && sheetWm > sheetHm) {
+          [sheetWm, sheetHm] = [sheetHm, sheetWm];
+        }
+
+        const sheetW = Math.round(sheetWm * MM_TO_PX);
+        const sheetH = Math.round(sheetHm * MM_TO_PX);
+        const gapPx = Math.round(parseFloat(ppGapSlider.value) * MM_TO_PX);
+        const marginPx = Math.round(4 * MM_TO_PX);
+
+        const cols = Math.max(1, Math.floor((sheetW - marginPx * 2 + gapPx) / (photoW + gapPx)));
+        const rows = Math.max(1, Math.floor((sheetH - marginPx * 2 + gapPx) / (photoH + gapPx)));
+        const maxPossible = cols * rows;
+
+        const copyVal = document.getElementById('pp-copies').value;
+        const targetCopies = copyVal === 'auto' ? maxPossible : Math.min(maxPossible, parseInt(copyVal, 10));
+
+        const borderType = document.getElementById('pp-border').value;
+        const showCutMarks = document.getElementById('pp-cutmarks').checked;
+        const showCaption = document.getElementById('pp-name-date').checked;
+        const captionText = document.getElementById('pp-caption-text').value.trim();
+
+        // Create high-res 300 DPI sheet
+        const sheetCanvas = document.createElement('canvas');
+        sheetCanvas.width = sheetW;
+        sheetCanvas.height = sheetH;
+        const sCtx = sheetCanvas.getContext('2d');
+
+        sCtx.fillStyle = '#ffffff';
+        sCtx.fillRect(0, 0, sheetW, sheetH);
+
+        // Center grid horizontally
+        const usedCols = Math.min(cols, targetCopies);
+        const totalGridW = usedCols * photoW + (usedCols - 1) * gapPx;
+        const startX = Math.max(marginPx, Math.floor((sheetW - totalGridW) / 2));
+        const startY = marginPx;
+
+        // Cover-fit source photo into exact passport aspect ratio
+        const srcRatio = workingCanvas.width / workingCanvas.height;
+        const dstRatio = photoW / photoH;
+        let sx = 0, sy = 0, sw = workingCanvas.width, sh = workingCanvas.height;
+        if (srcRatio > dstRatio) {
+          sw = workingCanvas.height * dstRatio;
+          sx = (workingCanvas.width - sw) / 2;
+        } else {
+          sh = workingCanvas.width / dstRatio;
+          sy = (workingCanvas.height - sh) / 2;
+        }
+
+        for (let i = 0; i < targetCopies; i++) {
+          const r = Math.floor(i / cols);
+          const c = i % cols;
+          const x = startX + c * (photoW + gapPx);
+          const y = startY + r * (photoH + gapPx);
+
+          sCtx.drawImage(workingCanvas, sx, sy, sw, sh, x, y, photoW, photoH);
+
+          // Optional Name/Date Strip at Bottom of Passport Photo
+          if (showCaption && captionText) {
+            const stripH = Math.round(photoH * 0.12);
+            sCtx.fillStyle = '#ffffff';
+            sCtx.fillRect(x, y + photoH - stripH, photoW, stripH);
+            sCtx.fillStyle = '#000000';
+            sCtx.font = `bold ${Math.round(stripH * 0.62)}px Arial, sans-serif`;
+            sCtx.textAlign = 'center';
+            sCtx.textBaseline = 'middle';
+            sCtx.fillText(captionText, x + photoW / 2, y + photoH - stripH / 2, photoW - 10);
+          }
+
+          // Photo Border
+          if (borderType === 'thin-black') {
+            sCtx.strokeStyle = '#0f172a';
+            sCtx.lineWidth = 3;
+            sCtx.strokeRect(x, y, photoW, photoH);
+          } else if (borderType === 'thick-black') {
+            sCtx.strokeStyle = '#000000';
+            sCtx.lineWidth = 7;
+            sCtx.strokeRect(x, y, photoW, photoH);
+          } else if (borderType === 'white-frame') {
+            sCtx.strokeStyle = '#ffffff';
+            sCtx.lineWidth = 10;
+            sCtx.strokeRect(x + 5, y + 5, photoW - 10, photoH - 10);
+            sCtx.strokeStyle = '#cbd5e1';
+            sCtx.lineWidth = 2;
+            sCtx.strokeRect(x, y, photoW, photoH);
+          }
+
+          // Scissor Cut-Marks
+          if (showCutMarks) {
+            sCtx.strokeStyle = '#94a3b8';
+            sCtx.lineWidth = 2;
+            const tick = 14;
+            sCtx.beginPath();
+            sCtx.moveTo(x - tick, y); sCtx.lineTo(x - 3, y);
+            sCtx.moveTo(x, y - tick); sCtx.lineTo(x, y - 3);
+            sCtx.moveTo(x + photoW + 3, y); sCtx.lineTo(x + photoW + tick, y);
+            sCtx.moveTo(x + photoW, y - tick); sCtx.lineTo(x + photoW, y - 3);
+            sCtx.moveTo(x - tick, y + photoH); sCtx.lineTo(x - 3, y + photoH);
+            sCtx.moveTo(x, y + photoH + 3); sCtx.lineTo(x, y + photoH + tick);
+            sCtx.moveTo(x + photoW + 3, y + photoH); sCtx.lineTo(x + photoW + tick, y + photoH);
+            sCtx.moveTo(x + photoW, y + photoH + 3); sCtx.lineTo(x + photoW, y + photoH + tick);
+            sCtx.stroke();
+          }
+        }
+
+        workingCanvas.width = sheetW;
+        workingCanvas.height = sheetH;
+        workingCtx.drawImage(sheetCanvas, 0, 0);
+        syncMainCanvasFromWorking();
+        toast(`🪪 Built ${targetCopies}-Copy Print Sheet (${paperVal})!`);
+      }
+
+      document.getElementById('btn-generate-sheet').addEventListener('click', buildPrintSheet);
+      document.getElementById('btn-print-sheet').addEventListener('click', () => {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        triggerPrint();
+      });
+
+      /* ----------------------------------------------------------------------
+         TOOL 2: BACKGROUND COLOR CHANGER & MANUAL ERASER BRUSH
+         ---------------------------------------------------------------------- */
+      let selectedBgColor = '#ffffff';
+      document.querySelectorAll('#bg-swatches .swatch').forEach((sw) => {
+        sw.addEventListener('click', () => {
+          document.querySelectorAll('#bg-swatches .swatch').forEach((s) => s.classList.remove('active'));
+          sw.classList.add('active');
+          selectedBgColor = sw.dataset.bg;
+        });
+      });
+      document.getElementById('bg-custom-color').addEventListener('input', (e) => {
+        selectedBgColor = e.target.value;
+      });
+      document.getElementById('bg-tolerance').addEventListener('input', (e) => {
+        document.getElementById('lbl-bg-tol').textContent = e.target.value;
+      });
+      document.getElementById('bg-feather').addEventListener('input', (e) => {
+        document.getElementById('lbl-bg-feather').textContent = e.target.value + ' px';
+      });
+      document.getElementById('bg-brush-size').addEventListener('input', (e) => {
+        document.getElementById('lbl-brush-size').textContent = e.target.value + ' px';
+      });
+
+      document.getElementById('btn-auto-bg').addEventListener('click', () => {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        pushUndo();
+
+        const w = workingCanvas.width;
+        const h = workingCanvas.height;
+        const imgData = workingCtx.getImageData(0, 0, w, h);
+        const d = imgData.data;
+
+        // Sample average background color from top-left, top-right, and top-center edges
+        const samplePts = [
+          [2, 2], [w - 3, 2], [Math.floor(w / 2), 2], [2, Math.floor(h * 0.25)], [w - 3, Math.floor(h * 0.25)]
+        ];
+        let sr = 0, sg = 0, sb = 0;
+        samplePts.forEach(([px, py]) => {
+          const idx = (py * w + px) * 4;
+          sr += d[idx]; sg += d[idx + 1]; sb += d[idx + 2];
+        });
+        sr /= samplePts.length; sg /= samplePts.length; sb /= samplePts.length;
+
+        const tol = parseInt(document.getElementById('bg-tolerance').value, 10) * 1.8;
+
+        // Flood-fill from edges so inner face/clothes with similar colors remain protected
+        const visited = new Uint8Array(w * h);
+        const queue = new Int32Array(w * h);
+        let head = 0, tail = 0;
+
+        function tryPush(x, y) {
+          if (x < 0 || y < 0 || x >= w || y >= h) return;
+          const pos = y * w + x;
+          if (visited[pos]) return;
+          const idx = pos * 4;
+          const dist = Math.hypot(d[idx] - sr, d[idx + 1] - sg, d[idx + 2] - sb);
+          if (dist <= tol) {
+            visited[pos] = 1;
+            queue[tail++] = pos;
+          }
+        }
+
+        for (let x = 0; x < w; x++) { tryPush(x, 0); tryPush(x, h - 1); }
+        for (let y = 0; y < h; y++) { tryPush(0, y); tryPush(w - 1, y); }
+
+        while (head < tail) {
+          const pos = queue[head++];
+          const x = pos % w;
+          const y = (pos - x) / w;
+          d[pos * 4 + 3] = 0; // Transparent alpha
+          tryPush(x + 1, y);
+          tryPush(x - 1, y);
+          tryPush(x, y + 1);
+          tryPush(x, y - 1);
+        }
+
+        // Composite onto chosen studio color or keep transparent
+        const tempC = document.createElement('canvas');
+        tempC.width = w; tempC.height = h;
+        tempC.getContext('2d').putImageData(imgData, 0, 0);
+
+        workingCtx.clearRect(0, 0, w, h);
+        if (selectedBgColor !== 'transparent') {
+          workingCtx.fillStyle = selectedBgColor;
+          workingCtx.fillRect(0, 0, w, h);
+        }
+        workingCtx.drawImage(tempC, 0, 0);
+        syncMainCanvasFromWorking();
+        toast('🎨 Studio background updated!');
+      });
+
+      // Manual Touch/Mouse Brush for Fine Hair/Edge Cleanup
+      document.querySelectorAll('.brush-mode').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.brush-mode').forEach((b) => b.classList.remove('active', 'btn-primary'));
+          btn.classList.add('active', 'btn-primary');
+          brushMode = btn.dataset.bmode;
+          canvas.style.cursor = brushMode === 'none' ? 'default' : 'crosshair';
+        });
+      });
+
+      function getCanvasPoint(e) {
+        const rect = canvas.getBoundingClientRect();
+        const clientX = e.touches ? e.touches[0].clientX : e.clientX;
+        const clientY = e.touches ? e.touches[0].clientY : e.clientY;
+        return {
+          x: ((clientX - rect.left) / rect.width) * canvas.width,
+          y: ((clientY - rect.top) / rect.height) * canvas.height
+        };
+      }
+
+      function applyBrushStroke(pt) {
+        const radius = (parseInt(document.getElementById('bg-brush-size').value, 10) / 2) * (canvas.width / 400);
+        workingCtx.save();
+        workingCtx.beginPath();
+        workingCtx.arc(pt.x, pt.y, radius, 0, Math.PI * 2);
+        workingCtx.clip();
+
+        if (brushMode === 'erase') {
+          workingCtx.clearRect(pt.x - radius, pt.y - radius, radius * 2, radius * 2);
+          if (selectedBgColor !== 'transparent') {
+            workingCtx.fillStyle = selectedBgColor;
+            workingCtx.fillRect(pt.x - radius, pt.y - radius, radius * 2, radius * 2);
+          }
+        } else if (brushMode === 'restore' && originalImage) {
+          workingCtx.drawImage(originalImage, 0, 0, workingCanvas.width, workingCanvas.height);
+        }
+        workingCtx.restore();
+        syncMainCanvasFromWorking();
+      }
+
+      /* ----------------------------------------------------------------------
+         TOOL 3: STUDIO COLOR LAB & RETOUCHING
+         ---------------------------------------------------------------------- */
+      const fltBright = document.getElementById('flt-bright');
+      const fltContrast = document.getElementById('flt-contrast');
+      const fltSat = document.getElementById('flt-sat');
+      const fltWarm = document.getElementById('flt-warm');
+      const fltSmooth = document.getElementById('flt-smooth');
+      const fltVig = document.getElementById('flt-vig');
+
+      function previewFiltersLive() {
+        if (!workingCanvas.width) return;
+        const b = fltBright.value;
+        const c = fltContrast.value;
+        const s = fltSat.value;
+        const w = parseInt(fltWarm.value, 10);
+        const sm = parseInt(fltSmooth.value, 10);
+        const vg = parseInt(fltVig.value, 10);
+
+        document.getElementById('val-bright').textContent = b + '%';
+        document.getElementById('val-contrast').textContent = c + '%';
+        document.getElementById('val-sat').textContent = s + '%';
+        document.getElementById('val-warm').textContent = w;
+        document.getElementById('val-smooth').textContent = sm + '%';
+        document.getElementById('val-vig').textContent = vg + '%';
+
+        canvas.width = workingCanvas.width;
+        canvas.height = workingCanvas.height;
+        ctx.save();
+        ctx.filter = `brightness(${b}%) contrast(${c}%) saturate(${s}%)`;
+        ctx.drawImage(workingCanvas, 0, 0);
+
+        // Soft skin glow pass
+        if (sm > 0) {
+          ctx.globalAlpha = (sm / 100) * 0.42;
+          ctx.filter = `brightness(${b}%) contrast(${c}%) saturate(${s}%) blur(${Math.max(2, Math.round(canvas.width * 0.008))}px)`;
+          ctx.drawImage(workingCanvas, 0, 0);
+          ctx.globalAlpha = 1;
+        }
+        ctx.filter = 'none';
+
+        // Warmth / Cool tint
+        if (w !== 0) {
+          ctx.fillStyle = w > 0 ? `rgba(255, 165, 0, ${w / 260})` : `rgba(56, 189, 248, ${Math.abs(w) / 260})`;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+
+        // Vignette
+        if (vg > 0) {
+          const rad = Math.hypot(canvas.width / 2, canvas.height / 2);
+          const grad = ctx.createRadialGradient(canvas.width / 2, canvas.height / 2, rad * 0.45, canvas.width / 2, canvas.height / 2, rad);
+          grad.addColorStop(0, 'rgba(0,0,0,0)');
+          grad.addColorStop(1, `rgba(0,0,0,${(vg / 100) * 0.72})`);
+          ctx.fillStyle = grad;
+          ctx.fillRect(0, 0, canvas.width, canvas.height);
+        }
+        ctx.restore();
+      }
+
+      [fltBright, fltContrast, fltSat, fltWarm, fltSmooth, fltVig].forEach((el) => {
+        el.addEventListener('input', previewFiltersLive);
+      });
+
+      document.querySelectorAll('.preset-filter').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const p = btn.dataset.preset;
+          fltBright.value = 100; fltContrast.value = 100; fltSat.value = 100;
+          fltWarm.value = 0; fltSmooth.value = 0; fltVig.value = 0;
+
+          if (p === 'auto') { fltBright.value = 108; fltContrast.value = 112; fltSat.value = 110; }
+          else if (p === 'portrait') { fltBright.value = 107; fltContrast.value = 106; fltSmooth.value = 45; fltWarm.value = 8; }
+          else if (p === 'bw') { fltSat.value = 0; fltContrast.value = 122; }
+          else if (p === 'vivid') { fltSat.value = 135; fltContrast.value = 114; }
+          else if (p === 'warm') { fltWarm.value = 22; fltBright.value = 104; }
+          else if (p === 'cool') { fltWarm.value = -20; fltContrast.value = 108; }
+          previewFiltersLive();
+        });
+      });
+
+      document.getElementById('btn-reset-filters').addEventListener('click', () => {
+        fltBright.value = 100; fltContrast.value = 100; fltSat.value = 100;
+        fltWarm.value = 0; fltSmooth.value = 0; fltVig.value = 0;
+        previewFiltersLive();
+      });
+
+      document.getElementById('btn-bake-filters').addEventListener('click', () => {
+        if (!workingCanvas.width) return;
+        pushUndo();
+        workingCtx.clearRect(0, 0, workingCanvas.width, workingCanvas.height);
+        workingCtx.drawImage(canvas, 0, 0);
+        fltBright.value = 100; fltContrast.value = 100; fltSat.value = 100;
+        fltWarm.value = 0; fltSmooth.value = 0; fltVig.value = 0;
+        previewFiltersLive();
+        toast('✨ Color & retouch adjustments applied!');
+      });
+
+      /* ----------------------------------------------------------------------
+         TOOL 4: CROP, ROTATE & FLIP
+         ---------------------------------------------------------------------- */
+      function transformWorking(fn) {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        pushUndo();
+        fn();
+        syncMainCanvasFromWorking();
+      }
+
+      document.getElementById('btn-rot-right').addEventListener('click', () => transformWorking(() => {
+        const tmp = document.createElement('canvas');
+        tmp.width = workingCanvas.height; tmp.height = workingCanvas.width;
+        const tctx = tmp.getContext('2d');
+        tctx.translate(tmp.width / 2, tmp.height / 2);
+        tctx.rotate(Math.PI / 2);
+        tctx.drawImage(workingCanvas, -workingCanvas.width / 2, -workingCanvas.height / 2);
+        workingCanvas.width = tmp.width; workingCanvas.height = tmp.height;
+        workingCtx.drawImage(tmp, 0, 0);
+      }));
+
+      document.getElementById('btn-rot-left').addEventListener('click', () => transformWorking(() => {
+        const tmp = document.createElement('canvas');
+        tmp.width = workingCanvas.height; tmp.height = workingCanvas.width;
+        const tctx = tmp.getContext('2d');
+        tctx.translate(tmp.width / 2, tmp.height / 2);
+        tctx.rotate(-Math.PI / 2);
+        tctx.drawImage(workingCanvas, -workingCanvas.width / 2, -workingCanvas.height / 2);
+        workingCanvas.width = tmp.width; workingCanvas.height = tmp.height;
+        workingCtx.drawImage(tmp, 0, 0);
+      }));
+
+      document.getElementById('btn-flip-h').addEventListener('click', () => transformWorking(() => {
+        const tmp = document.createElement('canvas');
+        tmp.width = workingCanvas.width; tmp.height = workingCanvas.height;
+        const tctx = tmp.getContext('2d');
+        tctx.translate(tmp.width, 0); tctx.scale(-1, 1);
+        tctx.drawImage(workingCanvas, 0, 0);
+        workingCtx.clearRect(0, 0, workingCanvas.width, workingCanvas.height);
+        workingCtx.drawImage(tmp, 0, 0);
+      }));
+
+      document.getElementById('btn-flip-v').addEventListener('click', () => transformWorking(() => {
+        const tmp = document.createElement('canvas');
+        tmp.width = workingCanvas.width; tmp.height = workingCanvas.height;
+        const tctx = tmp.getContext('2d');
+        tctx.translate(0, tmp.height); tctx.scale(1, -1);
+        tctx.drawImage(workingCanvas, 0, 0);
+        workingCtx.clearRect(0, 0, workingCanvas.width, workingCanvas.height);
+        workingCtx.drawImage(tmp, 0, 0);
+      }));
+
+      document.querySelectorAll('.crop-ratio').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          const [rw, rh] = btn.dataset.ratio.split('/').map(Number);
+          const targetRatio = rw / rh;
+          transformWorking(() => {
+            const w = workingCanvas.width;
+            const h = workingCanvas.height;
+            const curRatio = w / h;
+            let sx = 0, sy = 0, sw = w, sh = h;
+            if (curRatio > targetRatio) {
+              sw = Math.round(h * targetRatio);
+              sx = Math.round((w - sw) / 2);
+            } else {
+              sh = Math.round(w / targetRatio);
+              sy = Math.round((h - sh) / 2);
+            }
+            const tmp = document.createElement('canvas');
+            tmp.width = sw; tmp.height = sh;
+            tmp.getContext('2d').drawImage(workingCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+            workingCanvas.width = sw; workingCanvas.height = sh;
+            workingCtx.drawImage(tmp, 0, 0);
+          });
+          toast(`✂️ Cropped to ${btn.dataset.ratio} ratio`);
+        });
+      });
+
+      // Interactive Drag Crop Box
+      function drawCropOverlay() {
+        const x = cropRect.x * canvas.width;
+        const y = cropRect.y * canvas.height;
+        const w = cropRect.w * canvas.width;
+        const h = cropRect.h * canvas.height;
+
+        ctx.save();
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.55)';
+        ctx.fillRect(0, 0, canvas.width, y);
+        ctx.fillRect(0, y + h, canvas.width, canvas.height - (y + h));
+        ctx.fillRect(0, y, x, h);
+        ctx.fillRect(x + w, y, canvas.width - (x + w), h);
+
+        ctx.strokeStyle = '#3b82f6';
+        ctx.lineWidth = Math.max(3, canvas.width * 0.005);
+        ctx.strokeRect(x, y, w, h);
+        ctx.restore();
+      }
+
+      document.getElementById('btn-toggle-cropbox').addEventListener('click', () => {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        cropBoxActive = !cropBoxActive;
+        cropRect = { x: 0.12, y: 0.12, w: 0.76, h: 0.76 };
+        syncMainCanvasFromWorking();
+        if (cropBoxActive) toast('📐 Drag on photo to draw crop box, then tap Crop Now');
+      });
+
+      document.getElementById('btn-apply-cropbox').addEventListener('click', () => {
+        if (!cropBoxActive || !workingCanvas.width) return;
+        transformWorking(() => {
+          const sx = Math.round(cropRect.x * workingCanvas.width);
+          const sy = Math.round(cropRect.y * workingCanvas.height);
+          const sw = Math.max(20, Math.round(cropRect.w * workingCanvas.width));
+          const sh = Math.max(20, Math.round(cropRect.h * workingCanvas.height));
+          const tmp = document.createElement('canvas');
+          tmp.width = sw; tmp.height = sh;
+          tmp.getContext('2d').drawImage(workingCanvas, sx, sy, sw, sh, 0, 0, sw, sh);
+          workingCanvas.width = sw; workingCanvas.height = sh;
+          workingCtx.drawImage(tmp, 0, 0);
+          cropBoxActive = false;
+        });
+        toast('✂️ Custom crop applied!');
+      });
+
+      // Unified Pointer Events on Main Canvas (Brush or Crop Drag)
+      function onPointerDown(e) {
+        if (!workingCanvas.width) return;
+        const pt = getCanvasPoint(e);
+        if (cropBoxActive) {
+          draggingCrop = true;
+          cropStart = { x: pt.x / canvas.width, y: pt.y / canvas.height };
+          cropRect = { x: cropStart.x, y: cropStart.y, w: 0.05, h: 0.05 };
+          syncMainCanvasFromWorking();
+        } else if (brushMode !== 'none') {
+          pushUndo();
+          isDrawing = true;
+          applyBrushStroke(pt);
+        }
+      }
+
+      function onPointerMove(e) {
+        if (!workingCanvas.width) return;
+        const pt = getCanvasPoint(e);
+        if (draggingCrop && cropBoxActive) {
+          const curX = Math.min(1, Math.max(0, pt.x / canvas.width));
+          const curY = Math.min(1, Math.max(0, pt.y / canvas.height));
+          cropRect = {
+            x: Math.min(cropStart.x, curX),
+            y: Math.min(cropStart.y, curY),
+            w: Math.max(0.05, Math.abs(curX - cropStart.x)),
+            h: Math.max(0.05, Math.abs(curY - cropStart.y))
+          };
+          syncMainCanvasFromWorking();
+        } else if (isDrawing && brushMode !== 'none') {
+          applyBrushStroke(pt);
+        }
+      }
+
+      function onPointerUp() {
+        draggingCrop = false;
+        isDrawing = false;
+      }
+
+      canvas.addEventListener('mousedown', onPointerDown);
+      canvas.addEventListener('mousemove', onPointerMove);
+      window.addEventListener('mouseup', onPointerUp);
+      canvas.addEventListener('touchstart', (e) => { if (cropBoxActive || brushMode !== 'none') e.preventDefault(); onPointerDown(e); }, { passive: false });
+      canvas.addEventListener('touchmove', (e) => { if (draggingCrop || isDrawing) e.preventDefault(); onPointerMove(e); }, { passive: false });
+      window.addEventListener('touchend', onPointerUp);
+
+      /* ----------------------------------------------------------------------
+         TOOL 5: GOVT FORM EXACT KB COMPRESSOR & PIXEL RESIZER
+         ---------------------------------------------------------------------- */
+      document.querySelectorAll('.govt-preset').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          document.getElementById('res-width').value = btn.dataset.w;
+          document.getElementById('res-height').value = btn.dataset.h;
+          document.getElementById('res-target-kb').value = btn.dataset.kb;
+          toast(`✅ Preset loaded: ${btn.dataset.w}×${btn.dataset.h}px, Max ${btn.dataset.kb}KB`);
+        });
+      });
+
+      document.getElementById('btn-run-compress').addEventListener('click', () => {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        const tw = parseInt(document.getElementById('res-width').value, 10) || workingCanvas.width;
+        const th = parseInt(document.getElementById('res-height').value, 10) || workingCanvas.height;
+        const maxKb = parseInt(document.getElementById('res-target-kb').value, 10) || 50;
+
+        const outC = document.createElement('canvas');
+        outC.width = tw;
+        outC.height = th;
+        const octx = outC.getContext('2d');
+        octx.fillStyle = '#ffffff';
+        octx.fillRect(0, 0, tw, th);
+        octx.drawImage(workingCanvas, 0, 0, tw, th);
+
+        // Binary search JPEG quality to hit exact target KB
+        let low = 0.05, high = 0.98, bestUrl = outC.toDataURL('image/jpeg', 0.5);
+        for (let iter = 0; iter < 10; iter++) {
+          const mid = (low + high) / 2;
+          const url = outC.toDataURL('image/jpeg', mid);
+          const kb = Math.round((url.length * 3) / 4 / 1024);
+          if (kb <= maxKb) {
+            bestUrl = url;
+            low = mid;
+          } else {
+            high = mid;
+          }
+        }
+
+        const finalKb = ((bestUrl.length * 3) / 4 / 1024).toFixed(1);
+        document.getElementById('compress-status').textContent = `✅ Ready: ${tw}×${th}px • ${finalKb} KB (Target ≤ ${maxKb} KB)`;
+
+        const a = document.createElement('a');
+        a.href = bestUrl;
+        a.download = `govt-form-${tw}x${th}-${Math.round(finalKb)}kb.jpg`;
+        a.click();
+        toast(`⬇️ Downloaded ${finalKb} KB JPG!`);
+      });
+
+      /* ----------------------------------------------------------------------
+         TOOL 6: ALBUM & MULTI-PHOTO COLLAGE MAKER
+         ---------------------------------------------------------------------- */
+      document.getElementById('col-gap').addEventListener('input', (e) => {
+        document.getElementById('lbl-col-gap').textContent = e.target.value + ' px';
+      });
+      document.getElementById('col-rad').addEventListener('input', (e) => {
+        document.getElementById('lbl-col-rad').textContent = e.target.value + ' px';
+      });
+
+      document.getElementById('collage-files-input').addEventListener('change', (e) => {
+        const files = Array.from(e.target.files || []).slice(0, 6);
+        if (!files.length) return;
+        collageImages = [];
+        let loaded = 0;
+        files.forEach((f) => {
+          const r = new FileReader();
+          r.onload = (ev) => {
+            const img = new Image();
+            img.onload = () => {
+              collageImages.push(img);
+              loaded++;
+              if (loaded === files.length) {
+                toast(`🖼️ ${loaded} photos ready for Collage!`);
+                renderCollage();
+              }
+            };
+            img.src = ev.target.result;
+          };
+          r.readAsDataURL(f);
+        });
+      });
+
+      function renderCollage() {
+        if (!collageImages.length) return toast('⚠️ Select 2 to 6 photos first!');
+        pushUndo();
+
+        const cols = parseInt(document.getElementById('col-cols').value, 10);
+        const rows = Math.ceil(collageImages.length / cols);
+        const gap = parseInt(document.getElementById('col-gap').value, 10);
+        const rad = parseInt(document.getElementById('col-rad').value, 10);
+        const bg = document.getElementById('col-bg').value;
+
+        const cellW = 540;
+        const cellH = 420;
+        const totalW = cols * cellW + (cols + 1) * gap;
+        const totalH = rows * cellH + (rows + 1) * gap;
+
+        workingCanvas.width = totalW;
+        workingCanvas.height = totalH;
+        workingCtx.fillStyle = bg;
+        workingCtx.fillRect(0, 0, totalW, totalH);
+
+        collageImages.forEach((img, i) => {
+          const r = Math.floor(i / cols);
+          const c = i % cols;
+          const x = gap + c * (cellW + gap);
+          const y = gap + r * (cellH + gap);
+
+          workingCtx.save();
+          workingCtx.beginPath();
+          workingCtx.roundRect(x, y, cellW, cellH, rad);
+          workingCtx.clip();
+
+          const sRatio = img.width / img.height;
+          const dRatio = cellW / cellH;
+          let sx = 0, sy = 0, sw = img.width, sh = img.height;
+          if (sRatio > dRatio) {
+            sw = img.height * dRatio; sx = (img.width - sw) / 2;
+          } else {
+            sh = img.width / dRatio; sy = (img.height - sh) / 2;
+          }
+          workingCtx.drawImage(img, sx, sy, sw, sh, x, y, cellW, cellH);
+          workingCtx.restore();
+        });
+
+        dropzone.style.display = 'none';
+        canvas.style.display = 'block';
+        syncMainCanvasFromWorking();
+      }
+
+      document.getElementById('btn-build-collage').addEventListener('click', renderCollage);
+
+      /* ----------------------------------------------------------------------
+         TOOL 7: STUDIO WATERMARK & DATE STAMP
+         ---------------------------------------------------------------------- */
+      document.getElementById('wm-size').addEventListener('input', (e) => {
+        document.getElementById('lbl-wm-size').textContent = e.target.value + ' px';
+      });
+      document.getElementById('wm-op').addEventListener('input', (e) => {
+        document.getElementById('lbl-wm-op').textContent = e.target.value + '%';
+      });
+
+      document.getElementById('btn-apply-wm').addEventListener('click', () => {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        const txt = document.getElementById('wm-text').value.trim();
+        if (!txt) return toast('⚠️ Enter watermark text.');
+        pushUndo();
+
+        const pos = document.getElementById('wm-pos').value;
+        const color = document.getElementById('wm-color').value;
+        const scaleFactor = workingCanvas.width / 800;
+        const size = Math.round(parseInt(document.getElementById('wm-size').value, 10) * scaleFactor);
+        const op = parseInt(document.getElementById('wm-op').value, 10) / 100;
+
+        workingCtx.save();
+        workingCtx.globalAlpha = op;
+        workingCtx.fillStyle = color;
+        workingCtx.shadowColor = 'rgba(0,0,0,0.75)';
+        workingCtx.shadowBlur = 6;
+        workingCtx.font = `800 ${size}px system-ui, sans-serif`;
+
+        if (pos === 'tile') {
+          workingCtx.translate(workingCanvas.width / 2, workingCanvas.height / 2);
+          workingCtx.rotate(-Math.PI / 6);
+          workingCtx.textAlign = 'center';
+          const stepX = size * 10;
+          const stepY = size * 4;
+          for (let y = -workingCanvas.height; y < workingCanvas.height; y += stepY) {
+            for (let x = -workingCanvas.width; x < workingCanvas.width; x += stepX) {
+              workingCtx.fillText(txt, x, y);
+            }
+          }
+        } else if (pos === 'center') {
+          workingCtx.textAlign = 'center';
+          workingCtx.textBaseline = 'middle';
+          workingCtx.fillText(txt, workingCanvas.width / 2, workingCanvas.height / 2);
+        } else if (pos === 'bottom-left') {
+          workingCtx.textAlign = 'left';
+          workingCtx.textBaseline = 'bottom';
+          workingCtx.fillText(txt, size, workingCanvas.height - size);
+        } else {
+          workingCtx.textAlign = 'right';
+          workingCtx.textBaseline = 'bottom';
+          workingCtx.fillText(txt, workingCanvas.width - size, workingCanvas.height - size);
+        }
+        workingCtx.restore();
+        syncMainCanvasFromWorking();
+        toast('🏷️ Studio watermark stamped!');
+      });
+
+      /* ----------------------------------------------------------------------
+         TOOL 8: PHOTO INSPECTOR & LIVE RGB HISTOGRAM
+         ---------------------------------------------------------------------- */
+      function updateInfoAndHistogram() {
+        if (!workingCanvas.width) return;
+        const w = workingCanvas.width;
+        const h = workingCanvas.height;
+        const mp = ((w * h) / 1000000).toFixed(2);
+        const gcd = (a, b) => (b === 0 ? a : gcd(b, a % b));
+        const d = gcd(w, h);
+
+        document.getElementById('info-table').innerHTML = `
+          <div><strong>Resolution:</strong> ${w} × ${h} pixels (${mp} MP)</div>
+          <div><strong>Aspect Ratio:</strong> ${Math.round(w / d)}:${Math.round(h / d)}</div>
+          <div><strong>Print Size @ 300 DPI:</strong> ${(w / 300).toFixed(2)}" × ${(h / 300).toFixed(2)}" (${((w / 300) * 25.4).toFixed(0)} × ${((h / 300) * 25.4).toFixed(0)} mm)</div>
+          <div><strong>Processing Mode:</strong> 100% Local Offline Browser Engine</div>
+        `;
+
+        const hCanvas = document.getElementById('histogram-canvas');
+        const hCtx = hCanvas.getContext('2d');
+        hCtx.clearRect(0, 0, hCanvas.width, hCanvas.height);
+
+        const imgData = workingCtx.getImageData(0, 0, w, h).data;
+        const rHist = new Uint32Array(256);
+        const gHist = new Uint32Array(256);
+        const bHist = new Uint32Array(256);
+
+        const step = Math.max(4, Math.floor(imgData.length / 40000) * 4);
+        for (let i = 0; i < imgData.length; i += step) {
+          rHist[imgData[i]]++;
+          gHist[imgData[i + 1]]++;
+          bHist[imgData[i + 2]]++;
+        }
+
+        let maxVal = 1;
+        for (let i = 0; i < 256; i++) {
+          maxVal = Math.max(maxVal, rHist[i], gHist[i], bHist[i]);
+        }
+
+        function drawChannel(arr, color) {
+          hCtx.strokeStyle = color;
+          hCtx.lineWidth = 1.5;
+          hCtx.beginPath();
+          for (let i = 0; i < 256; i++) {
+            const x = (i / 255) * hCanvas.width;
+            const y = hCanvas.height - (arr[i] / maxVal) * (hCanvas.height - 8);
+            if (i === 0) hCtx.moveTo(x, y);
+            else hCtx.lineTo(x, y);
+          }
+          hCtx.stroke();
+        }
+
+        drawChannel(rHist, 'rgba(239, 68, 68, 0.85)');
+        drawChannel(gHist, 'rgba(16, 185, 129, 0.85)');
+        drawChannel(bHist, 'rgba(59, 130, 246, 0.85)');
+      }
+
+      /* ----------------------------------------------------------------------
+         EXPORT FINAL IMAGE, DIRECT PRINT & SAVE STANDALONE HTML FILE
+         ---------------------------------------------------------------------- */
+      function downloadFinalImage() {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo first!');
+        const mime = document.getElementById('export-format').value;
+        const ext = mime === 'image/png' ? 'png' : mime === 'image/webp' ? 'webp' : 'jpg';
+        const a = document.createElement('a');
+        a.href = canvas.toDataURL(mime, 0.96);
+        a.download = `solu-studio-${workingCanvas.width}x${workingCanvas.height}.${ext}`;
+        a.click();
+        toast(`⬇️ Downloaded .${ext.toUpperCase()} file!`);
+      }
+
+      function triggerPrint() {
+        if (!workingCanvas.width) return toast('⚠️ Attach a photo or build a print sheet first!');
+        const printImg = document.getElementById('print-output-img');
+        printImg.src = canvas.toDataURL('image/png');
+        printImg.onload = () => window.print();
+      }
+
+      document.getElementById('btn-export-final').addEventListener('click', downloadFinalImage);
+      document.getElementById('mob-download').addEventListener('click', downloadFinalImage);
+      document.getElementById('btn-print-now').addEventListener('click', triggerPrint);
+      document.getElementById('mob-print').addEventListener('click', triggerPrint);
+
+      // Direct Download of this Complete Offline HTML Tool
+      document.getElementById('btn-download-app').addEventListener('click', () => {
+        const htmlContent = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
+        const blob = new Blob([htmlContent], { type: 'text/html;charset=utf-8' });
+        const a = document.createElement('a');
+        a.href = URL.createObjectURL(blob);
+        a.download = 'solu-photo-studio-pro.html';
+        a.click();
+        toast('💾 Saved solu-photo-studio-pro.html!');
+      });
+    })();
+  </script>
+</body>
+</html>
